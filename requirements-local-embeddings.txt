@@ -1,0 +1,2 @@
+# If you want to use local embeddings instead of serverless only
+sentence-transformers>=3.0.0
