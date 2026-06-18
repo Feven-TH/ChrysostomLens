@@ -70,11 +70,14 @@ function App() {
     localStorage.setItem('chrysostom-messages', JSON.stringify(cleanMessages));
   }, [messages]);
 
-  // Fetch status on load
+// Fetch status on load
   const fetchStatus = async () => {
     try {
       setStatus(prev => ({ ...prev, status: 'checking', message: 'Connecting...' }));
-      const response = await fetch('http://localhost:8000/api/status');
+
+      const backendUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+      const response = await fetch(`${backendUrl}/api/status`);
+      
       const data = await response.json();
       setStatus(data);
     } catch (err) {
@@ -158,7 +161,8 @@ function App() {
 
     try {
       // Switch the request to a POST request to send query and sliding window history payload
-      const response = await fetch('http://localhost:8000/api/query', {
+      const backendUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+      const response = await fetch(`${backendUrl}/api/query`,{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

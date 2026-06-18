@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">ChrysostomLens icon</title>
+  <desc id="desc">A gold manuscript leaf with a small lens and flame on a burgundy field.</desc>
+  <rect width="64" height="64" rx="14" fill="#8c1d2d"/>
+  <path d="M18 12h23c5 0 9 4 9 9v31H24c-5 0-9-4-9-9V15c0-2 1-3 3-3z" fill="#f3ecd9"/>
+  <path d="M22 18h20M22 25h17M22 32h13" stroke="#c59b27" stroke-width="3" stroke-linecap="round"/>
+  <path d="M18 12c4 1 6 5 6 9v31" fill="none" stroke="#c59b27" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="39" cy="39" r="8" fill="none" stroke="#25201a" stroke-width="4"/>
+  <path d="M45 45l7 7" stroke="#25201a" stroke-width="4" stroke-linecap="round"/>
+  <path d="M40 29c4 3 5 6 3 9-1 2-3 3-5 3 1-3 0-5-3-7 4-1 5-3 5-5z" fill="#c59b27"/>
+</svg>
