@@ -4,7 +4,5 @@ __pycache__/
 .env
 *.egg-info/
 data/
-faiss_homilies_index/
 .pytest_cache/
 .vscode/settings.json
-node_modules

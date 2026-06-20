@@ -20,9 +20,8 @@ below. Each passage is tagged with its homily number and paragraph index.
 Guidelines:
 - Draw on the global context, local context, and raw translation together.
 - Quote or paraphrase directly from the retrieved text when relevant.
-- Always cite the source of your information inline using the format [H<homily_number> §<paragraph_index>] \
-matching the homily and paragraph_index from the source tags (e.g., [H1 §12]). Make sure to use this \
-exact format so the user can click the citation to inspect the original translation.
+- Do not include inline source tags, bracketed citations, links, or paragraph markers in the answer text. \
+The interface shows retrieved excerpts separately for source inspection.
 - If the retrieved passages do not contain enough information, say so plainly and invite the \
 user to narrow or rephrase the question.
 - Never invent citations, patristic claims, historical facts, or cross-references that are \

@@ -275,54 +275,12 @@ function App() {
     return match ? match[0] : String(homily ?? '');
   };
 
-  const handleCitationClick = (sources, homily, paragraph) => {
-    const sourceIndex = sources.findIndex((source) => (
-      normalizeCitationHomily(source.homily) === String(homily)
-      && String(source.paragraph_index) === String(paragraph)
-    ));
-
-    setActiveSources(sources);
-    setActiveSourceIndex(sourceIndex >= 0 ? sourceIndex : 0);
-    setActiveCitationKey(`H${homily} §${paragraph}`);
-
-    window.requestAnimationFrame(() => {
-      sourceContentRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  };
-
-  const renderMessageContent = (content, sources = []) => {
+  const renderMessageContent = (content) => {
     if (!content) return null;
-
-    const citationRegex = /\[H(\d+)\s+§(\d+)\]/g;
-    const parts = [];
-    let lastIndex = 0;
-    let match;
-
-    while ((match = citationRegex.exec(content)) !== null) {
-      if (match.index > lastIndex) {
-        parts.push(content.slice(lastIndex, match.index));
-      }
-
-      const [label, homily, paragraph] = match;
-      parts.push(
-        <button
-          key={`${match.index}-${label}`}
-          type="button"
-          className="citation-anchor"
-          onClick={() => handleCitationClick(sources, homily, paragraph)}
-          title="Open original passage"
-        >
-          {label.slice(1, -1)}
-        </button>
-      );
-      lastIndex = citationRegex.lastIndex;
-    }
-
-    if (lastIndex < content.length) {
-      parts.push(content.slice(lastIndex));
-    }
-
-    return parts;
+    return content
+      .replace(/\s*\[H\d+\s+§\d+\]/g, '')
+      .replace(/[ \t]+\n/g, '\n')
+      .trim();
   };
 
   // Helper to extract paragraphs from source content
@@ -538,7 +496,7 @@ function App() {
                   <div className={isAssistant ? 'patristic-response' : 'user-response'} style={{
                     color: msg.isError ? 'var(--accent-crimson)' : undefined
                   }}>
-                    {isAssistant ? renderMessageContent(msg.content, msg.sources) : msg.content}
+                    {isAssistant ? renderMessageContent(msg.content) : msg.content}
                     {isAssistant && msg.loading && !msg.content && (
                       <span style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>Formulating response...</span>
                     )}
