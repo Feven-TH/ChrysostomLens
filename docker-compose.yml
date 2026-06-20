@@ -1,0 +1,43 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: chrysostom-lens-backend:latest
+    env_file:
+      - .env
+    environment:
+      CHRYSOSTOM_PDF: data/Homilies on the Gospel of Matthew.pdf
+      CHRYSOSTOM_PARSED_CACHE: data/parsed_paragraphs.json
+      CHRYSOSTOM_CACHE: data/enriched_homilies.json
+      CHRYSOSTOM_INDEX: faiss_homilies_index
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./faiss_homilies_index:/app/faiss_homilies_index
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/status', timeout=5).read()",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: chrysostom-lens-frontend:latest
+    environment:
+      VITE_API_URL: http://localhost:8000
+    ports:
+      - "5173:5173"
+    depends_on:
+      backend:
+        condition: service_started

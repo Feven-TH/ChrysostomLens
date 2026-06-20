@@ -111,6 +111,9 @@ ChrysostomLens/
 |-- requirements.txt
 |-- requirements-local-embeddings.txt
 |-- .env_example
+|-- Dockerfile
+|-- docker-compose.yml
+|-- .dockerignore
 |-- data/
 |   |-- Homilies on the Gospel of Matthew.pdf
 |   |-- parsed_paragraphs.json
@@ -130,6 +133,8 @@ ChrysostomLens/
 |       |-- chat.py
 |       `-- server.py
 `-- frontend/
+    |-- Dockerfile
+    |-- .dockerignore
     |-- package.json
     |-- vite.config.js
     |-- .env_example
@@ -228,6 +233,103 @@ pip install -r requirements-local-embeddings.txt
 ```
 
 ### Operational Sequences
+
+#### Run with Docker
+
+Docker is the fastest way to run the full web app without managing Python and Node environments directly. The compose stack starts:
+
+- `backend`: FastAPI on `http://localhost:8000`
+- `frontend`: React/Vite on `http://localhost:5173`
+
+Before starting Docker, create the root `.env` file and insert your own API keys:
+
+```bash
+cp .env_example .env
+```
+
+Required values:
+
+```bash
+GOOGLE_API_KEY=insert_your_google_or_gemini_key_here
+GROQ_API_KEY=insert_your_groq_key_here
+HUGGINGFACEHUB_API_TOKEN=insert_your_huggingface_token_here
+```
+
+Start the complete app:
+
+```bash
+docker compose up --build
+```
+
+Expected startup result:
+
+```text
+backend-1   | Uvicorn running on http://0.0.0.0:8000
+frontend-1  | VITE v5.x.x  ready
+frontend-1  | Local:   http://localhost:5173/
+```
+
+Open the UI:
+
+```text
+http://localhost:5173
+```
+
+Check backend health from another terminal:
+
+```bash
+curl http://localhost:8000/api/status
+```
+
+Expected JSON shape:
+
+```json
+{
+  "pdf_found": true,
+  "parsed_cache_found": true,
+  "enriched_cache_found": true,
+  "index_found": true,
+  "status": "ready",
+  "message": "Library is loaded and ready for study."
+}
+```
+
+Run CLI checks inside the backend container:
+
+```bash
+docker compose exec backend chrysostom-lens status
+docker compose exec backend chrysostom-lens models
+```
+
+Run ingestion inside Docker with the default serverless embedding provider:
+
+```bash
+docker compose exec backend chrysostom-lens ingest
+```
+
+The compose file mounts these host directories into the backend container:
+
+```text
+./data -> /app/data
+./faiss_homilies_index -> /app/faiss_homilies_index
+```
+
+That means regenerated caches and FAISS files are written back to your local workspace, not trapped inside the container.
+
+Stop the stack:
+
+```bash
+docker compose down
+```
+
+Build a backend image with optional local CPU embedding dependencies:
+
+```bash
+docker compose build --build-arg INSTALL_LOCAL_EMBEDDINGS=true backend
+docker compose run --rm backend chrysostom-lens ingest --embedding-provider local
+```
+
+Use the local Python flow below only if you do not want Docker.
 
 Check local system status:
 
