@@ -60,12 +60,12 @@
 
   --accent-gold: #e5bd42;
   --accent-gold-hover: #f7d365;
-  --accent-crimson: #b3393b;
-  --accent-crimson-hover: #d15053;
+  --accent-crimson: #d4af37;
+  --accent-crimson-hover: #f79927;
 
   --border-color: #27212d;
   --border-gold: #e5bd42;
-  --border-crimson: #b3393b;
+  --border-crimson: #ea2828;
 
   --shadow-sm: 0 4px 8px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   --shadow-md: 0 12px 24px rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
