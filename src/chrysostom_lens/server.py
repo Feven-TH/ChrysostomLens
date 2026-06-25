@@ -33,7 +33,9 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production actual frontend url wil be specified here
+    allow_origins=[
+        "https://chrysostom-lens.vercel.app", 
+        "http://localhost:5173"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -80,7 +82,7 @@ def get_vector_store():
         )
 
 
-@app.get("/api/status")
+@app.api_route("/api/status" , methods=["GET", "HEAD"])
 def get_status() -> dict[str, Any]:
     """Check system and database health/status."""
     global vector_store
